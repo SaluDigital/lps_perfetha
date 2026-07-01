@@ -489,31 +489,40 @@
         line-height: 1.8;
       }
 
-      .smiles-grid {
+      .smiles-carousel {
+        --visible-slides: 4;
+        --advance-slides: 2;
+        --smile-gap: 6px;
+        position: relative;
+        padding: 0;
+      }
+
+      .smiles-track {
         display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: 18px;
+        grid-template-columns: repeat(var(--visible-slides), minmax(0, 1fr));
+        gap: var(--smile-gap);
+        width: 100%;
+        transition: opacity 0.35s ease;
+      }
+
+      .smiles-track.is-changing {
+        opacity: 0.84;
+      }
+
+      .smiles-source-list {
+        display: none;
       }
 
       .smile-card {
+        box-sizing: border-box;
         position: relative;
         overflow: hidden;
-        grid-column: span 2;
         border-radius: 28px;
-        aspect-ratio: 1 / 1.08;
+        aspect-ratio: 1 / 1.26;
         border: 1px solid rgba(28, 28, 28, 0.08);
-        box-shadow: 0 20px 46px rgba(28, 28, 28, 0.1);
+        box-shadow: 0 16px 34px rgba(28, 28, 28, 0.09);
         background: #edf1f4;
         isolation: isolate;
-        --position: 50%;
-      }
-
-      .smile-card:nth-child(4) {
-        grid-column: 2 / span 2;
-      }
-
-      .smile-card:nth-child(5) {
-        grid-column: 4 / span 2;
       }
 
       .smile-card::after {
@@ -521,85 +530,20 @@
         position: absolute;
         inset: 0;
         background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 38%);
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 36%),
+          linear-gradient(0deg, rgba(12, 16, 22, 0.18), transparent 34%);
         pointer-events: none;
-      }
-
-      .smile-image,
-      .smile-before,
-      .smile-after {
-        position: absolute;
-        inset: 0;
       }
 
       .smile-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.45s ease;
       }
 
-      .smile-before {
-        width: 100%;
-        overflow: hidden;
-        z-index: 1;
-        clip-path: inset(0 calc(100% - var(--position)) 0 0);
-      }
-
-      .smile-before img {
-        width: 100%;
-      }
-
-      .smile-divider {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: var(--position);
-        z-index: 3;
-        width: 2px;
-        background: rgba(255, 255, 255, 0.94);
-        box-shadow: 0 0 0 1px rgba(28, 28, 28, 0.12), 0 0 18px rgba(28, 28, 28, 0.2);
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
-
-      .smile-handle {
-        position: absolute;
-        top: 50%;
-        left: var(--position);
-        z-index: 4;
-        display: grid;
-        place-items: center;
-        width: 44px;
-        height: 44px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.96);
-        border: 1px solid rgba(28, 28, 28, 0.1);
-        color: var(--basic-navy);
-        box-shadow: 0 12px 28px rgba(28, 28, 28, 0.22);
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-      }
-
-      .smile-handle::before {
-        content: "< >";
-        font-size: 0.84rem;
-        font-weight: 800;
-        line-height: 1;
-      }
-
-      .smile-slider {
-        position: absolute;
-        inset: 0;
-        z-index: 6;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        opacity: 0;
-        cursor: ew-resize;
-      }
-
-      .smile-slider:focus-visible + .smile-divider {
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.45), 0 0 18px rgba(28, 28, 28, 0.2);
+      .smile-card:hover img {
+        transform: scale(1.03);
       }
 
       .split-header {
@@ -1570,14 +1514,9 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .smiles-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .smile-card,
-        .smile-card:nth-child(4),
-        .smile-card:nth-child(5) {
-          grid-column: auto;
+        .smiles-carousel {
+          --visible-slides: 2;
+          --advance-slides: 2;
         }
 
         .section {
@@ -1636,8 +1575,9 @@
           grid-template-columns: 1fr;
         }
 
-        .smiles-grid {
-          grid-template-columns: 1fr;
+        .smiles-carousel {
+          --visible-slides: 1;
+          --advance-slides: 1;
         }
 
         .testimonial-track {
@@ -1834,62 +1774,40 @@
             </div>
           </div>
 
-          <div class="smiles-grid">
-            <figure class="smile-card">
-              <div class="smile-image smile-before">
-                <img src="./assets/a_1.jpg" alt="Antes do tratamento de sorriso na Perfetha 1" />
-              </div>
-              <div class="smile-image smile-after">
-                <img src="./assets/a_2.jpg" alt="Depois do tratamento de sorriso na Perfetha 1" />
-              </div>
-              <input class="smile-slider" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois do sorriso 1" />
-              <span class="smile-divider" aria-hidden="true"></span>
-              <span class="smile-handle" aria-hidden="true"></span>
-            </figure>
-            <figure class="smile-card">
-              <div class="smile-image smile-before">
-                <img src="./assets/b_1.jpg" alt="Antes do tratamento de sorriso na Perfetha 2" />
-              </div>
-              <div class="smile-image smile-after">
-                <img src="./assets/b_2.jpg" alt="Depois do tratamento de sorriso na Perfetha 2" />
-              </div>
-              <input class="smile-slider" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois do sorriso 2" />
-              <span class="smile-divider" aria-hidden="true"></span>
-              <span class="smile-handle" aria-hidden="true"></span>
-            </figure>
-            <figure class="smile-card">
-              <div class="smile-image smile-before">
-                <img src="./assets/c_1.jpg" alt="Antes do tratamento de sorriso na Perfetha 3" />
-              </div>
-              <div class="smile-image smile-after">
-                <img src="./assets/c_2.jpg" alt="Depois do tratamento de sorriso na Perfetha 3" />
-              </div>
-              <input class="smile-slider" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois do sorriso 3" />
-              <span class="smile-divider" aria-hidden="true"></span>
-              <span class="smile-handle" aria-hidden="true"></span>
-            </figure>
-            <figure class="smile-card">
-              <div class="smile-image smile-before">
-                <img src="./assets/d_1.jpg" alt="Antes do tratamento de sorriso na Perfetha 4" />
-              </div>
-              <div class="smile-image smile-after">
-                <img src="./assets/d_2.jpg" alt="Depois do tratamento de sorriso na Perfetha 4" />
-              </div>
-              <input class="smile-slider" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois do sorriso 4" />
-              <span class="smile-divider" aria-hidden="true"></span>
-              <span class="smile-handle" aria-hidden="true"></span>
-            </figure>
-            <figure class="smile-card">
-              <div class="smile-image smile-before">
-                <img src="./assets/e_1.jpg" alt="Antes do tratamento de sorriso na Perfetha 5" />
-              </div>
-              <div class="smile-image smile-after">
-                <img src="./assets/e_2.jpg" alt="Depois do tratamento de sorriso na Perfetha 5" />
-              </div>
-              <input class="smile-slider" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois do sorriso 5" />
-              <span class="smile-divider" aria-hidden="true"></span>
-              <span class="smile-handle" aria-hidden="true"></span>
-            </figure>
+          <div class="smiles-carousel" data-smiles-carousel>
+            <div class="smiles-source-list" aria-hidden="true">
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/a_1.jpg" alt="Foto de resultado de sorriso na Perfetha 1" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/a_2.jpg" alt="Foto de resultado de sorriso na Perfetha 2" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/b_1.jpg" alt="Foto de resultado de sorriso na Perfetha 3" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/b_2.jpg" alt="Foto de resultado de sorriso na Perfetha 4" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/c_1.jpg" alt="Foto de resultado de sorriso na Perfetha 5" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/c_2.jpg" alt="Foto de resultado de sorriso na Perfetha 6" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/d_1.jpg" alt="Foto de resultado de sorriso na Perfetha 7" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/d_2.jpg" alt="Foto de resultado de sorriso na Perfetha 8" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/e_1.jpg" alt="Foto de resultado de sorriso na Perfetha 9" />
+              </figure>
+              <figure class="smile-card" data-smile-source>
+                <img src="./assets/e_2.jpg" alt="Foto de resultado de sorriso na Perfetha 10" />
+              </figure>
+            </div>
+            <div class="smiles-track" data-smiles-track aria-live="polite"></div>
           </div>
         </div>
       </section>
@@ -2231,7 +2149,8 @@
     <a class="floating-whatsapp" href="https://api.whatsapp.com/send?phone=5596988070001&text=Ol%C3%A1%2C+vim+do+Google+e+gostaria+de+saber+mais+sobre+Implante+Dent%C3%A1rio" target="_blank" rel="noopener noreferrer"></a>
     <script>
       const faqItems = document.querySelectorAll(".faq-item");
-      const smileSliders = document.querySelectorAll(".smile-slider");
+      const smilesCarousel = document.querySelector("[data-smiles-carousel]");
+      const smilesTrack = document.querySelector("[data-smiles-track]");
       const testimonialTrack = document.querySelector("[data-testimonial-track]");
       const testimonialControls = document.querySelectorAll(".testimonial-control");
       const yearEl = document.getElementById("current-year");
@@ -2249,17 +2168,72 @@
         });
       });
 
-      smileSliders.forEach((slider) => {
-        const card = slider.closest(".smile-card");
-        if (!card) return;
+      if (smilesCarousel && smilesTrack) {
+        const smileSources = Array.from(smilesCarousel.querySelectorAll("[data-smile-source] img")).map((img) => ({
+          src: img.getAttribute("src") || "",
+          alt: img.getAttribute("alt") || "",
+        }));
+        let smileIndex = 0;
+        let smileIntervalId;
 
-        const updateComparison = () => {
-          card.style.setProperty("--position", `${slider.value}%`);
+        const getCarouselConfig = () => {
+          const styles = getComputedStyle(smilesCarousel);
+          const visibleSlides = Number.parseInt(styles.getPropertyValue("--visible-slides"), 10) || 1;
+          const advanceSlides = Number.parseInt(styles.getPropertyValue("--advance-slides"), 10) || 1;
+          const gap = Number.parseFloat(styles.getPropertyValue("--smile-gap")) || 18;
+          return { visibleSlides, advanceSlides, gap };
         };
 
-        slider.addEventListener("input", updateComparison);
-        updateComparison();
-      });
+        const renderSmilesCarousel = (animate = false) => {
+          if (!smileSources.length) return;
+
+          const { visibleSlides } = getCarouselConfig();
+          const normalizedIndex = ((smileIndex % smileSources.length) + smileSources.length) % smileSources.length;
+
+          if (animate) {
+            smilesTrack.classList.add("is-changing");
+          }
+
+          const visibleCards = Array.from({ length: visibleSlides }, (_, offset) => {
+            const item = smileSources[(normalizedIndex + offset) % smileSources.length];
+            return `
+              <figure class="smile-card">
+                <img src="${item.src}" alt="${item.alt}" />
+              </figure>
+            `;
+          }).join("");
+
+          smilesTrack.innerHTML = visibleCards;
+
+          if (animate) {
+            window.setTimeout(() => {
+              smilesTrack.classList.remove("is-changing");
+            }, 220);
+          }
+        };
+
+        const advanceSmilesCarousel = () => {
+          const { advanceSlides } = getCarouselConfig();
+          smileIndex = (smileIndex + advanceSlides) % smileSources.length;
+          renderSmilesCarousel(true);
+        };
+
+        const startSmilesAutoplay = () => {
+          window.clearInterval(smileIntervalId);
+          smileIntervalId = window.setInterval(advanceSmilesCarousel, 3500);
+        };
+
+        window.addEventListener("resize", () => {
+          renderSmilesCarousel();
+          startSmilesAutoplay();
+        });
+
+        smilesCarousel.addEventListener("mouseenter", () => window.clearInterval(smileIntervalId));
+        smilesCarousel.addEventListener("mouseleave", startSmilesAutoplay);
+
+        renderSmilesCarousel();
+        startSmilesAutoplay();
+      }
 
       if (testimonialTrack && testimonialControls.length) {
         testimonialControls.forEach((control) => {
